@@ -1,0 +1,681 @@
+1.1 
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+double StackMax(stack<double> s) 
+{
+    double maxElement = 0;
+    cout << "Элементы стека: " << endl;
+    while (!s.empty()) 
+    {
+        double topElement = s.top();
+        cout << topElement << endl;
+
+        if (topElement > maxElement) 
+        {
+            maxElement = topElement;
+        }
+        s.pop(); 
+    }
+    cout << endl;
+    return maxElement;
+}
+
+int main() 
+{
+    setlocale(0, "");
+    stack<double> myStack;
+
+    myStack.push(2.1);
+    myStack.push(2.7);
+    myStack.push(9.3);
+    myStack.push(6.7);
+    myStack.push(5.5);
+
+    double maxElement = StackMax(myStack);
+    cout << "Максимальный элемент в стеке: " << maxElement << endl;
+
+    return 0;
+}
+
+1.2 
+
+#include <iostream>
+#include <stack>
+#include <string>
+
+using namespace std;
+
+struct Book 
+{
+    string title; 
+    double price; 
+};
+
+double AveragePrice(stack<Book> books)
+{
+    double totalPrice = 0;
+    int count = 0;
+    cout << "Книги в стеке:" << endl;
+    while (!books.empty())
+    {
+        Book book = books.top(); 
+        cout << "Название: " << book.title << ", Цена: " << book.price << " руб." << endl;
+
+        totalPrice += book.price; 
+        count++; 
+        books.pop(); 
+    }
+    return count > 0 ? totalPrice / count : 0; 
+}
+
+int main()
+{
+    setlocale(0, "");
+    stack<Book> myBooks;
+
+    Book book1;
+    book1.title = "Мастер и Маргарита";
+    book1.price = 556;
+    myBooks.push(book1);
+
+    Book book2;
+    book2.title = "Ведьмак";
+    book2.price = 1120;
+    myBooks.push(book2);
+
+    Book book3;
+    book3.title = "48 Законов власти";
+    book3.price = 900;
+    myBooks.push(book3);
+
+    double averagePrice = AveragePrice(myBooks);
+    cout << "Средняя цена книг: " << averagePrice << " руб." << endl;
+
+    return 0;
+}
+
+2.1 
+
+#include <iostream>
+
+using namespace std;
+
+// Определение структуры узла списка
+struct Node 
+{
+    double value; 
+    Node* next; 
+
+    Node(double val) : value(val), next(nullptr) {}
+};
+class Queue 
+{
+public:
+    Node* front; 
+    Node* rear; 
+
+    Queue() : front(nullptr), rear(nullptr) {} 
+
+    // Функция добавления элемента в очередь
+    void enqueue(double value) 
+    {
+        Node* newNode = new Node(value);
+        if (rear == nullptr) 
+        {
+            front = rear = newNode;
+            return;
+        }
+        rear->next = newNode;
+        rear = newNode;
+    }
+
+    // Функция удаления элемента из очереди
+    void dequeue() 
+    {
+        if (front == nullptr) return;
+        Node* temp = front;
+        front = front->next;
+        if (front == nullptr) 
+        {
+            rear = nullptr;
+        }
+        delete temp;
+    }
+
+    // Функция печати элементов очереди
+    void printQueue() 
+    {
+        Node* temp = front;
+        while (temp != nullptr) 
+        {
+            cout << temp->value << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    // Функция для вычисления суммы элементов очереди
+    double sumQueue()
+    {
+        double sum = 0;
+        Node* temp = front;
+        while (temp != nullptr) 
+        {
+            sum += temp->value;
+            temp = temp->next;
+        }
+        return sum;
+    }
+
+    // Деструктор очереди
+    ~Queue() 
+    {
+        while (front != nullptr) 
+        {
+            dequeue();
+        }
+    }
+};
+int main() 
+{
+    setlocale(0, "");
+    Queue q;
+
+    q.enqueue(2.1);
+    q.enqueue(2.1);
+    q.enqueue(5.3);
+
+    cout << "Содержимое очереди: ";
+    q.printQueue();
+
+    q.dequeue();
+
+    q.enqueue(4.9);
+
+    cout << "Содержимое очереди после удаления и добавления: ";
+    q.printQueue();
+
+    double sum = q.sumQueue();
+    cout << "Сумма элементов очереди: " << sum << endl;
+
+    return 0;
+}
+
+2.2
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Определение структуры узла
+struct Node 
+{
+    string data; 
+    Node* next; 
+
+    Node(string d) : data(d), next(nullptr) {} 
+};
+
+// Определение класса стека
+class Stack 
+{
+public:
+    Node* top;
+
+    Stack() : top(nullptr) {} 
+
+    // Функция добавления элемента в стек
+    void push(string data) 
+    {
+        Node* newNode = new Node(data);
+        newNode->next = top;
+        top = newNode;
+    }
+
+    // Функция удаления элемента из стека
+    void pop() 
+    {
+        if (top == nullptr) return;
+        Node* temp = top;
+        top = top->next;
+        delete temp;
+    }
+
+    // Функция печати элементов стека
+    void printStack() 
+    {
+        Node* temp = top;
+        while (temp != nullptr) 
+        {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    // Функция печати строк из стека, которые состоят из двух символов
+    void printTwoCharacterStrings() 
+    {
+        Node* temp = top;
+        while (temp != nullptr) 
+        {
+            if (temp->data.size() == 2) 
+            {
+                cout << temp->data << " ";
+            }
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    // Деструктор стека
+    ~Stack() 
+    {
+        while (top != nullptr)
+        {
+            pop();
+        }
+    }
+};
+
+int main() 
+{
+    setlocale(0, "");
+    Stack s;
+
+    s.push("3");
+    s.push("TE");
+    s.push("group");
+    s.push("the");
+    s.push("of");
+    s.push("Students");
+    cout << "Содержимое стека: ";
+    s.printStack();
+    s.pop();
+    cout << "Содержимое стека после удаления: ";
+    s.printStack();
+    cout << "Строки из двух символов: ";
+    s.printTwoCharacterStrings();
+
+    return 0;
+}
+
+4.1 
+
+#include <iostream>
+
+using namespace std;
+
+struct Node 
+{
+    double value;
+    Node* next;
+
+    Node(double val) : value(val), next(nullptr) {}
+};
+
+void append(Node** head, double newValue) 
+{
+    Node* newNode = new Node(newValue);
+    if (*head == nullptr)
+    {
+        *head = newNode;
+        return;
+    }
+    Node* last = *head;
+    while (last->next != nullptr) 
+    {
+        last = last->next;
+    }
+    last->next = newNode;
+}
+
+void removeBeforeValue(Node** head, double value) 
+{
+    if (*head == nullptr || (*head)->next == nullptr) return;
+
+    Node* current = *head, * previous = nullptr;
+
+    while (current->next != nullptr && current->next->value != value)
+    {
+        previous = current;
+        current = current->next;
+    }
+
+    if (previous == nullptr) return; 
+
+    if (current->next != nullptr && current->next->value == value) 
+    {
+        Node* temp = previous->next;
+        previous->next = current->next;
+        delete temp;
+    }
+}
+
+void printList(Node* head)
+{
+    while (head != nullptr) 
+    {
+        cout << head->value << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() 
+{
+    setlocale(0, "");
+    Node* head = nullptr;
+
+    append(&head, 10.5);
+    append(&head, 20.3);
+    append(&head, 55.0);
+    append(&head, 30.7);
+    append(&head, 40.2);
+
+    cout << "Исходный список: ";
+    printList(head);
+
+    removeBeforeValue(&head, 55.0);
+
+    cout << "Список после удаления: ";
+    printList(head);
+
+    return 0;
+}
+
+4.2 
+
+#include <iostream>
+
+using namespace std;
+
+struct Node 
+{
+    int value;
+    Node* next;
+
+    Node(int val) : value(val), next(nullptr) {}
+};
+
+void append(Node** head, int newValue) 
+{
+    Node* newNode = new Node(newValue);
+    if (*head == nullptr) 
+    {
+        *head = newNode;
+    }
+    else {
+        Node* temp = *head;
+        while (temp->next != nullptr) 
+        {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+void insertBeforeFirstZero(Node** head, int value1, int value2) 
+{
+    Node* current = *head;
+    Node* prev = nullptr;
+    while (current != nullptr && current->value != 0) 
+    {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current == nullptr)
+    {
+        return; 
+    }
+
+    Node* newNode1 = new Node(value1);
+    Node* newNode2 = new Node(value2);
+
+    if (prev != nullptr) 
+    { 
+        prev->next = newNode1;
+        newNode1->next = newNode2;
+        newNode2->next = current;
+    }
+    else 
+    { 
+        newNode1->next = newNode2;
+        newNode2->next = *head;
+        *head = newNode1;
+    }
+}
+
+void printList(Node* node) 
+{
+    while (node != nullptr) 
+    {
+        cout << node->value << " ";
+        node = node->next;
+    }
+    cout << endl;
+}
+
+int main() 
+{
+    setlocale(0, "");
+    Node* head = nullptr;
+
+    append(&head, 10);
+    append(&head, 20);
+    append(&head, 0);  
+    append(&head, 30);
+    append(&head, 40);
+
+    cout << "Исходный список: ";
+    printList(head);
+
+    insertBeforeFirstZero(&head, 111, 222);
+
+    cout << "Список после вставки: ";
+    printList(head);
+
+    return 0;
+}
+
+5.1
+
+#include <iostream>
+
+using namespace std;
+
+struct Node 
+{
+    double value;
+    Node* next;
+
+    Node(double val) : value(val), next(nullptr) {}
+};
+
+void append(Node** head, double newValue) 
+{
+    Node* newNode = new Node(newValue);
+    if (*head == nullptr) 
+    {
+        *head = newNode;
+    }
+    else 
+    {
+        Node* last = *head;
+        while (last->next != nullptr) 
+        {
+            last = last->next;
+        }
+        last->next = newNode;
+    }
+}
+
+void duplicateFirstPositive(Node** head) 
+{
+    Node* current = *head;
+    while (current != nullptr) 
+    {
+        if (current->value > 0) 
+        {
+            Node* newNode = new Node(current->value);
+            newNode->next = current->next; 
+            current->next = newNode; 
+            return; 
+        }
+        current = current->next;
+    }
+}
+
+void printList(Node* head) 
+{
+    while (head != nullptr) 
+    {
+        cout << head->value << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() 
+{
+    setlocale(0, "");
+    Node* head = nullptr;
+
+    append(&head, 1.1);
+    append(&head, 2.2);
+    append(&head, 3.3); 
+    append(&head, -4.4);
+    append(&head, 5.5);
+
+    cout << "Исходный список: ";
+    printList(head);
+
+    duplicateFirstPositive(&head);
+
+    cout << "Список после дублирования первого положительного элемента: ";
+    printList(head);
+
+    return 0;
+}
+
+5.2 
+
+#include <iostream>
+
+using namespace std;
+
+struct Node 
+{
+    int value;
+    Node* next;
+
+    Node(int val) : value(val), next(nullptr) {}
+};
+
+void append(Node** head, int newValue) 
+{
+    Node* newNode = new Node(newValue);
+    if (*head == nullptr) 
+    {
+        *head = newNode;
+    }
+    else {
+        Node* last = *head;
+        while (last->next != nullptr) 
+        {
+            last = last->next;
+        }
+        last->next = newNode;
+    }
+}
+
+void removeFirstGreaterThanFour(Node** head) 
+{
+    Node* current = *head;
+    Node* previous = nullptr;
+    while (current != nullptr) 
+    {
+        if (current->value > 4) 
+        {
+            if (previous == nullptr) 
+            {
+                *head = current->next;
+            }
+            else 
+            {
+                previous->next = current->next;
+            }
+            delete current;
+            return;
+        }
+        previous = current;
+        current = current->next;
+    }
+}
+
+void insertTenBeforeFifteen(Node** head) 
+{
+    Node* current = *head;
+    Node* previous = nullptr;
+    while (current != nullptr) 
+    {
+        if (current->value == 15) 
+        {
+            Node* newNode = new Node(10);
+            if (previous == nullptr) 
+            {
+                newNode->next = *head;
+                *head = newNode;
+            }
+            else 
+            {
+                newNode->next = current;
+                previous->next = newNode;
+                previous = newNode; 
+            }
+        }
+        previous = current;
+        current = current->next;
+    }
+}
+
+void printList(Node* head) 
+{
+    while (head != nullptr) 
+    {
+        cout << head->value << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() 
+{
+    setlocale(0, "");
+    Node* head = nullptr;
+
+    append(&head, 5);
+    append(&head, 4); 
+    append(&head, 9);
+    append(&head, 15);
+
+    cout << "Исходный список: ";
+    printList(head);
+
+    removeFirstGreaterThanFour(&head);
+
+    cout << "Список после удаления первого элемента, большего 4: ";
+    printList(head);
+
+    insertTenBeforeFifteen(&head);
+
+    cout << "Список после вставки 10 перед каждым 15: ";
+    printList(head);
+
+    return 0;
+}
+
